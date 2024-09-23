@@ -26,7 +26,7 @@ DB_PASSWORD=ton_mot_de_passe
 Ensuite, exécute la commande suivante pour déployer CouchDB à l'aide de Docker Compose. Docker Compose utilisera automatiquement les variables définies dans le fichier `.env`.
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 ### 4. Vérifier le bon fonctionnement de CouchDB
