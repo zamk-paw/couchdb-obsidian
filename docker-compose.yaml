@@ -1,0 +1,38 @@
+version: "3.9"
+
+# Sets the project name.
+name: localhost-databases
+
+# The Docker services.
+services:
+  # The couchDB database container.
+  couchdb:
+    # https://hub.docker.com/_/couchdb
+    image: couchdb:latest
+    container_name: "${DB_CONTAINER_NAME:-couchdb}"
+    command: ["bash", "/opt/couchdb/set-port.sh"]
+    environment:
+      COUCHDB_USER: "${DB_USERNAME}"
+      COUCHDB_PASSWORD: "${DB_PASSWORD}"
+      PORT: "${PORT:-5984}"
+    networks:
+      - local
+    # Map the database container exposed port to the host port.
+    ports:
+     - ${PORT:-5984}:5984
+    volumes:
+      - ./couchdb_data:/opt/couchdb/data
+      - ./create-databases.sh:/opt/couchdb/create-databases.sh
+      - ./set-port.sh:/opt/couchdb/set-port.sh
+
+# The Docker networks.
+networks:
+  local:
+    driver: "bridge"
+    name: ${NETWORK_NAME:-local_dbs_network}
+
+# The Docker volumes.
+volumes:
+  couchdb_data:
+    driver: "local"
+    name: "${DB_VOLUME_DATA_NAME:-couchdb_data}"
